@@ -1,0 +1,19 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"pbp",
+		"pbp"
+	],
+	"key": {
+		"b": {
+			"item": "minecraft:bamboo"
+		},
+		"p": {
+			"item": "minecraft:paper"
+		}
+	},
+	"result": {
+		"item": "siltbox:paper_screen",
+		"count": 8
+	}
+}

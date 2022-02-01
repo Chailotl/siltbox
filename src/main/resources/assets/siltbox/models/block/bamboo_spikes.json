@@ -1,0 +1,69 @@
+{
+	"parent": "minecraft:block/block",
+	"textures": {
+		"all": "block/bamboo_stalk",
+        "particle": "block/bamboo_stalk"
+	},
+	"elements": [
+		{
+			"from": [ 8, 0, 6.5 ],
+			"to": [ 11, 12, 9.5 ],
+			"faces": {
+				"up":    { "uv": [ 13, 0, 16, 3 ], "texture": "#all" },
+				"down":  { "uv": [ 13, 4, 16, 7 ], "texture": "#all", "cullface": "down" },
+				"north": { "uv": [ 0, 0, 3, 12 ], "texture": "#all" },
+				"south": { "uv": [ 0, 0, 3, 12 ], "texture": "#all" },
+				"east":  { "uv": [ 0, 0, 3, 12 ], "texture": "#all" },
+				"west":  { "uv": [ 0, 0, 3, 12 ], "texture": "#all" }
+			}
+		},
+		{
+			"from": [ 2.5, 0, 4 ],
+			"to": [ 4.5, 9, 6 ],
+			"faces": {
+				"up":    { "uv": [ 13, 0, 15, 2 ], "texture": "#all" },
+				"down":  { "uv": [ 13, 4, 15, 6 ], "texture": "#all", "cullface": "down" },
+				"north": { "uv": [ 0, 1, 2, 10 ], "texture": "#all" },
+				"south": { "uv": [ 0, 1, 2, 10 ], "texture": "#all" },
+				"east":  { "uv": [ 0, 1, 2, 10 ], "texture": "#all" },
+				"west":  { "uv": [ 0, 1, 2, 10 ], "texture": "#all" }
+			}
+		},
+		{
+			"from": [ 9, 0, 1 ],
+			"to": [ 11, 6, 3 ],
+			"faces": {
+				"up":    { "uv": [ 13, 0, 15, 2 ], "texture": "#all" },
+				"down":  { "uv": [ 13, 4, 15, 6 ], "texture": "#all", "cullface": "down" },
+				"north": { "uv": [ 0, 3, 2, 9 ], "texture": "#all" },
+				"south": { "uv": [ 0, 3, 2, 9 ], "texture": "#all" },
+				"east":  { "uv": [ 0, 3, 2, 9 ], "texture": "#all" },
+				"west":  { "uv": [ 0, 3, 2, 9 ], "texture": "#all" }
+			}
+		},
+		{
+			"from": [ 11.5, 0, 12 ],
+			"to": [ 13.5, 10, 14 ],
+			"faces": {
+				"up":    { "uv": [ 13, 0, 15, 2 ], "texture": "#all" },
+				"down":  { "uv": [ 13, 4, 15, 6 ], "texture": "#all", "cullface": "down" },
+				"north": { "uv": [ 0, 1, 2, 11 ], "texture": "#all" },
+				"south": { "uv": [ 0, 1, 2, 11 ], "texture": "#all" },
+				"east":  { "uv": [ 0, 1, 2, 11 ], "texture": "#all" },
+				"west":  { "uv": [ 0, 1, 2, 11 ], "texture": "#all" }
+			}
+		},
+		{
+			"from": [ 3.5, 0, 10.5 ],
+			"to": [ 5.5, 7, 12.5 ],
+			"faces": {
+				"up":    { "uv": [ 13, 0, 15, 2 ], "texture": "#all" },
+				"down":  { "uv": [ 13, 4, 15, 6 ], "texture": "#all", "cullface": "down" },
+				"north": { "uv": [ 0, 2, 2, 9 ], "texture": "#all" },
+				"south": { "uv": [ 0, 2, 2, 9 ], "texture": "#all" },
+				"east":  { "uv": [ 0, 2, 2, 9 ], "texture": "#all" },
+				"west":  { "uv": [ 0, 2, 2, 9 ], "texture": "#all" }
+			}
+		}
+	]
+}

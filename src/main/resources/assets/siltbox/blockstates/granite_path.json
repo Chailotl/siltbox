@@ -1,0 +1,9 @@
+{
+	"variants": {
+		"": [
+			{
+				"model": "siltbox:block/granite_path", "uvlock": true
+			}
+		]
+	}
+}

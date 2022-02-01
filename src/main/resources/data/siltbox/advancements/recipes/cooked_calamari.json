@@ -1,0 +1,27 @@
+{
+	"parent": "minecraft:recipes/root",
+	"criteria": {
+		"has_raw_calamari": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"item": "siltbox:raw_calamari"
+					}
+				]
+			}
+		}
+	},
+	"requirements": [
+		[
+			"has_raw_calamari"
+		]
+	],
+	"rewards": {
+		"recipes": [
+			"siltbox:cooked_calamari",
+			"siltbox:cooked_calamari_from_smoking",
+			"siltbox:cooked_calamari_from_campfire"
+		]
+	}
+}

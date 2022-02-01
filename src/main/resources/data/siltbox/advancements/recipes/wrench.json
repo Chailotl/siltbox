@@ -1,0 +1,25 @@
+{
+	"parent": "minecraft:recipes/root",
+	"criteria": {
+		"has_steel_ingot": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"item": "siltbox:steel_ingot"
+					}
+				]
+			}
+		}
+	},
+	"requirements": [
+		[
+			"has_steel_ingot"
+		]
+	],
+	"rewards": {
+		"recipes": [
+			"siltbox:wrench"
+		]
+	}
+}

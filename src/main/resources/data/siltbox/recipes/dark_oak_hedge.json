@@ -1,0 +1,17 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"group": "group",
+	"pattern": [
+		"lll",
+		"lll"
+	],
+	"key": {
+		"l": {
+			"item": "minecraft:dark_oak_leaves"
+		}
+	},
+	"result": {
+		"item": "siltbox:dark_oak_hedge",
+		"count": 6
+	}
+}

@@ -1,0 +1,6 @@
+{
+	"parent": "siltbox:block/leaf_pile",
+	"textures": {
+		"all": "minecraft:block/birch_leaves"
+	}
+}

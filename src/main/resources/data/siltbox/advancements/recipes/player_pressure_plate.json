@@ -1,0 +1,25 @@
+{
+	"parent": "minecraft:recipes/root",
+	"criteria": {
+		"has_smooth_stone": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"item": "minecraft:smooth_stone"
+					}
+				]
+			}
+		}
+	},
+	"requirements": [
+		[
+			"has_smooth_stone"
+		]
+	],
+	"rewards": {
+		"recipes": [
+			"siltbox:player_pressure_plate"
+		]
+	}
+}

@@ -1,0 +1,6 @@
+{
+	"parent": "siltbox:block/template_hedge_side",
+	"textures": {
+		"wall": "minecraft:block/spruce_leaves"
+	}
+}

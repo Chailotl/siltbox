@@ -1,0 +1,14 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"ss"
+	],
+	"key": {
+		"s": {
+			"item": "minecraft:smooth_stone"
+		}
+	},
+	"result": {
+		"item": "siltbox:player_pressure_plate"
+	}
+}

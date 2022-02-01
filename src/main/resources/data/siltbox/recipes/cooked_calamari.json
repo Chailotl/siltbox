@@ -1,0 +1,9 @@
+{
+	"type": "minecraft:smelting",
+	"ingredient": {
+		"item": "siltbox:raw_calamari"
+	},
+	"result": "siltbox:cooked_calamari",
+	"experience": 0.35,
+	"cookingtime": 200
+}

@@ -1,0 +1,25 @@
+{
+	"parent": "minecraft:recipes/root",
+	"criteria": {
+		"has_water_bottle": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"item": "minecraft:potion"
+					}
+				]
+			}
+		}
+	},
+	"requirements": [
+		[
+			"has_water_bottle"
+		]
+	],
+	"rewards": {
+		"recipes": [
+			"siltbox:purified_water_bottle"
+		]
+	}
+}

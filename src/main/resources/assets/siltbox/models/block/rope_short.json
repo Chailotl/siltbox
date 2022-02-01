@@ -1,0 +1,30 @@
+{
+	"ambientocclusion": false,
+	"textures": {
+		"particle": "siltbox:block/rope",
+		"front": "siltbox:block/rope_short",
+		"back": "siltbox:block/rope_short_back"
+	},
+	"elements": [
+		{
+			"from": [ 1.25, 0, 8 ],
+			"to": [ 15.65, 16, 8 ],
+			"rotation": { "origin": [ 8, 8, 8 ], "axis": "y", "angle": 45, "rescale": true },
+			"shade": false,
+			"faces": {
+				"north": { "uv": [ 0, 0, 16, 16 ], "texture": "#back" },
+				"south": { "uv": [ 0, 0, 16, 16 ], "texture": "#front" }
+			}
+		},
+		{
+			"from": [ 8, 0, 0.35 ],
+			"to": [ 8, 16, 14.75 ],
+			"rotation": { "origin": [ 8, 8, 8 ], "axis": "y", "angle": 45, "rescale": true },
+			"shade": false,
+			"faces": {
+				"west": { "uv": [ 0, 0, 16, 16 ], "texture": "#back" },
+				"east": { "uv": [ 0, 0, 16, 16 ], "texture": "#front" }
+			}
+		}
+	]
+}

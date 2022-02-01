@@ -1,0 +1,21 @@
+{
+	"variants": {
+		"": [
+			{
+				"model": "siltbox:block/bamboo_spikes"
+			},
+			{
+				"model": "siltbox:block/bamboo_spikes",
+				"y": 90
+			},
+			{
+				"model": "siltbox:block/bamboo_spikes",
+				"y": 180
+			},
+			{
+				"model": "siltbox:block/bamboo_spikes",
+				"y": 270
+			}
+		]
+	}
+}

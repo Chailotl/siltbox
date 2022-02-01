@@ -1,0 +1,9 @@
+{
+	"parent": "minecraft:block/orientable",
+	"textures": {
+		"top": "siltbox:block/nether_forge_top",
+		"front": "siltbox:block/nether_forge_front",
+		"side": "siltbox:block/nether_forge_side",
+		"bottom": "minecraft:block/polished_blackstone"
+	}
+}

@@ -1,0 +1,25 @@
+{
+	"parent": "minecraft:recipes/root",
+	"criteria": {
+		"has_bubble": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"item": "siltbox:pearlescent_bubble"
+					}
+				]
+			}
+		}
+	},
+	"requirements": [
+		[
+			"has_bubble"
+		]
+	],
+	"rewards": {
+		"recipes": [
+			"siltbox:dolphin_fins"
+		]
+	}
+}

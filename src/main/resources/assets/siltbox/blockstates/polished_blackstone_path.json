@@ -1,0 +1,9 @@
+{
+	"variants": {
+		"": [
+			{
+				"model": "siltbox:block/polished_blackstone_path", "uvlock": true
+			}
+		]
+	}
+}

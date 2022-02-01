@@ -1,0 +1,7 @@
+{
+	"parent": "siltbox:block/sleeping_bag",
+	"textures": {
+		"all": "minecraft:block/red_wool",
+		"particle": "minecraft:block/red_wool"
+	}
+}

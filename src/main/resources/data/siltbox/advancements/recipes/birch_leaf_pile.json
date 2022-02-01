@@ -1,0 +1,25 @@
+{
+	"parent": "minecraft:recipes/root",
+	"criteria": {
+		"has_leaves": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"item": "minecraft:birch_leaves"
+					}
+				]
+			}
+		}
+	},
+	"requirements": [
+		[
+			"has_leaves"
+		]
+	],
+	"rewards": {
+		"recipes": [
+			"siltbox:birch_leaf_pile"
+		]
+	}
+}

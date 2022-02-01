@@ -1,0 +1,22 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"rrr",
+		"rfr",
+		"bbb"
+	],
+	"key": {
+		"r": {
+			"item": "minecraft:red_nether_bricks"
+		},
+		"b": {
+			"item": "minecraft:polished_blackstone"
+		},
+		"f": {
+			"item": "minecraft:blast_furnace"
+		}
+	},
+	"result": {
+		"item": "siltbox:nether_forge"
+	}
+}

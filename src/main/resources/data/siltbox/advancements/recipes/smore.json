@@ -1,0 +1,37 @@
+{
+	"parent": "minecraft:recipes/root",
+	"criteria": {
+		"has_cooked_marshmallow": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"item": "siltbox:cooked_marshmallow"
+					}
+				]
+			}
+		},
+		"has_burnt_marshmallow": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"item": "siltbox:burnt_marshmallow"
+					}
+				]
+			}
+		}
+	},
+	"requirements": [
+		[
+			"has_cooked_marshmallow",
+			"has_burnt_marshmallow"
+		]
+	],
+	"rewards": {
+		"recipes": [
+			"siltbox:smore",
+			"siltbox:burnt_smore"
+		]
+	}
+}

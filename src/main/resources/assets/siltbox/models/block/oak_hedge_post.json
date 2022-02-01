@@ -1,0 +1,6 @@
+{
+	"parent": "siltbox:block/template_hedge_post",
+	"textures": {
+		"wall": "minecraft:block/oak_leaves"
+	}
+}

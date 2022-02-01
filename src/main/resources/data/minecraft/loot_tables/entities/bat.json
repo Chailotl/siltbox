@@ -1,0 +1,29 @@
+{
+	"type": "minecraft:entity",
+	"pools": [
+		{
+			"rolls": 1,
+			"entries": [
+				{
+					"type": "minecraft:empty",
+					"weight": 6
+				},
+				{
+					"type": "minecraft:item",
+					"name": "minecraft:apple",
+					"weight": 3
+				},
+				{
+					"type": "minecraft:item",
+					"name": "minecraft:melon_slice",
+					"weight": 2
+				},
+				{
+					"type": "minecraft:item",
+					"name": "minecraft:sweet_berries",
+					"weight": 1
+				}
+			]
+		}
+	]
+}

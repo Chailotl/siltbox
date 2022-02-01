@@ -1,0 +1,11 @@
+accessWidener	v1	named
+accessible	class	net/minecraft/village/TradeOffers$SellItemFactory
+accessible	class	net/minecraft/village/TradeOffers$SellEnchantedToolFactory
+accessible	class	net/minecraft/recipe/CookingRecipeSerializer$RecipeFactory
+accessible	class	net/minecraft/client/particle/BlockLeakParticle$DrippingLava
+accessible	class	net/minecraft/client/particle/BlockLeakParticle$Falling
+accessible	class	net/minecraft/client/particle/BlockLeakParticle$Landing
+accessible	method	net/minecraft/entity/damage/DamageSource	setUnblockable	()Lnet/minecraft/entity/damage/DamageSource;
+accessible	method	net/minecraft/entity/damage/DamageSource	setBypassesArmor	()Lnet/minecraft/entity/damage/DamageSource;
+accessible	class	net/minecraft/entity/passive/DolphinEntity$PlayWithItemsGoal
+accessible	method	net/minecraft/block/PaneBlock	<init>	(Lnet/minecraft/block/AbstractBlock$Settings;)V

@@ -1,0 +1,47 @@
+{
+	"parent": "minecraft:recipes/root",
+	"criteria": {
+		"has_nether_wart": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"item": "minecraft:nether_wart"
+					}
+				]
+			}
+		},
+		"has_nether_brick": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"item": "minecraft:nether_brick"
+					}
+				]
+			}
+		},
+		"has_polished_blackstone": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"item": "minecraft:polished_blackstone"
+					}
+				]
+			}
+		}
+	},
+	"requirements": [
+		[
+			"has_nether_wart",
+			"has_nether_brick",
+			"has_polished_blackstone"
+		]
+	],
+	"rewards": {
+		"recipes": [
+			"siltbox:nether_forge"
+		]
+	}
+}

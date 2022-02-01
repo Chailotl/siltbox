@@ -1,0 +1,9 @@
+{
+	"variants": {
+		"": [
+			{
+				"model": "siltbox:block/cobblestone_path", "uvlock": true
+			}
+		]
+	}
+}

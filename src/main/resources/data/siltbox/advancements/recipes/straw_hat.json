@@ -1,0 +1,25 @@
+{
+	"parent": "minecraft:recipes/root",
+	"criteria": {
+		"has_wheat": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"item": "minecraft:wheat"
+					}
+				]
+			}
+		}
+	},
+	"requirements": [
+		[
+			"has_wheat"
+		]
+	],
+	"rewards": {
+		"recipes": [
+			"siltbox:straw_hat"
+		]
+	}
+}

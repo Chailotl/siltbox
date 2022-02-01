@@ -1,0 +1,9 @@
+{
+	"variants": {
+		"": [
+			{
+				"model": "siltbox:block/prismarine_path", "uvlock": true
+			}
+		]
+	}
+}

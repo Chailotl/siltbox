@@ -1,0 +1,14 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "minecraft:rotten_flesh"
+		},
+		{
+			"item": "minecraft:rotten_flesh"
+		}
+	],
+	"result": {
+		"item": "siltbox:rotten_leather"
+	}
+}

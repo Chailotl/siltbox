@@ -1,0 +1,6 @@
+{
+	"parent": "siltbox:item/marshmallow_on_a_stick",
+	"textures": {
+		"layer0": "siltbox:item/marshmallow_on_a_stick_cooked"
+	}
+}

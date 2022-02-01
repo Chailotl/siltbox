@@ -1,0 +1,11 @@
+{
+	"variants": {
+		"axis=x": {
+			"model": "siltbox:block/small_oak_log"
+		},
+		"axis=z": {
+			"model": "siltbox:block/small_oak_log",
+			"y": 90
+		}
+	}
+}

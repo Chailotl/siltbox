@@ -1,0 +1,9 @@
+{
+	"type": "minecraft:smelting",
+	"ingredient": {
+		"item": "minecraft:potion"
+	},
+	"result": "siltbox:purified_water_bottle",
+	"experience": 0.35,
+	"cookingtime": 200
+}

@@ -1,0 +1,25 @@
+{
+	"parent": "minecraft:recipes/root",
+	"criteria": {
+		"has_iron_node": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"item": "siltbox:iron_node"
+					}
+				]
+			}
+		}
+	},
+	"requirements": [
+		[
+			"has_iron_node"
+		]
+	],
+	"rewards": {
+		"recipes": [
+			"siltbox:iron_ingot"
+		]
+	}
+}

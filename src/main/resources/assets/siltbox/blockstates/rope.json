@@ -1,0 +1,16 @@
+{
+	"variants": {
+		"hook=true,end=true": {
+			"model": "siltbox:block/rope_short"
+		},
+		"hook=true,end=false": {
+			"model": "siltbox:block/rope_hook"
+		},
+		"hook=false,end=true": {
+			"model": "siltbox:block/rope_end"
+		},
+		"hook=false,end=false": {
+			"model": "siltbox:block/rope"
+		}
+	}
+}

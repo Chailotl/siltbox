@@ -1,0 +1,11 @@
+{
+	"replace": false,
+	"values": [
+		"siltbox:oak_hedge",
+		"siltbox:spruce_hedge",
+		"siltbox:birch_hedge",
+		"siltbox:jungle_hedge",
+		"siltbox:acacia_hedge",
+		"siltbox:dark_oak_hedge"
+	]
+}

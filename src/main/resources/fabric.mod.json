@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "id": "siltbox",
+  "version": "${version}",
+
+  "name": "Siltbox",
+  "description": "This mod is my idealized verison of Minecraft.",
+  "authors": [
+    "Chai"
+  ],
+  "contact": {
+    "homepage": "https://fabricmc.net/",
+    "sources": "https://github.com/FabricMC/fabric-example-mod"
+  },
+
+  "license": "CC0-1.0",
+  "icon": "assets/siltbox/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.chai.siltbox.Main"
+    ],
+    "client": [
+      "com.chai.siltbox.Main"
+    ],
+    "server": [
+      "com.chai.siltbox.Main"
+    ]
+  },
+  "mixins": [
+    "siltbox.mixins.json"
+  ],
+  "accessWidener": "siltbox.accesswidener",
+
+  "depends": {
+    "fabricloader": ">=0.7.4",
+    "fabric": "*",
+    "minecraft": "1.16.x"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
+}

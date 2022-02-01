@@ -1,0 +1,9 @@
+{
+	"type": "minecraft:smoking",
+	"ingredient": {
+		"item": "siltbox:rotten_leather"
+	},
+	"result": "minecraft:leather",
+	"experience": 0,
+	"cookingtime": 200
+}

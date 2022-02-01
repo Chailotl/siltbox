@@ -1,0 +1,25 @@
+{
+	"parent": "minecraft:recipes/root",
+	"criteria": {
+		"has_gold_node": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"item": "siltbox:gold_node"
+					}
+				]
+			}
+		}
+	},
+	"requirements": [
+		[
+			"has_gold_node"
+		]
+	],
+	"rewards": {
+		"recipes": [
+			"siltbox:gold_ingot"
+		]
+	}
+}

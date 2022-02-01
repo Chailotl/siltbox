@@ -1,0 +1,6 @@
+{
+	"parent": "siltbox:block/post_inventory",
+	"textures": {
+		"texture": "minecraft:block/acacia_planks"
+	}
+}

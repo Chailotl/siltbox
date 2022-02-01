@@ -1,0 +1,19 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"bsb",
+		"b b",
+		"bsb"
+	],
+	"key": {
+		"b": {
+			"item": "minecraft:bamboo"
+		},
+		"s": {
+			"item": "minecraft:string"
+		}
+	},
+	"result": {
+		"item": "siltbox:strainer"
+	}
+}

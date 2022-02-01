@@ -1,0 +1,9 @@
+{
+	"bubble_pop": {
+		"sounds": [
+			"siltbox:mob/dolphin/bubble1",
+			"siltbox:mob/dolphin/bubble2",
+			"siltbox:mob/dolphin/bubble3"
+		]
+	}
+}

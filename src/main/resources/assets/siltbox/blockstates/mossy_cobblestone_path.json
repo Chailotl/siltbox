@@ -1,0 +1,9 @@
+{
+	"variants": {
+		"": [
+			{
+				"model": "siltbox:block/mossy_cobblestone_path", "uvlock": true
+			}
+		]
+	}
+}

@@ -1,0 +1,9 @@
+{
+	"variants": {
+		"": [
+			{
+				"model": "siltbox:block/sandstone_path", "uvlock": true
+			}
+		]
+	}
+}

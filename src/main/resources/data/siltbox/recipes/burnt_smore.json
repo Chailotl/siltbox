@@ -1,0 +1,21 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "siltbox:graham_cracker"
+		},
+		{
+			"item": "siltbox:graham_cracker"
+		},
+		{
+			"item": "siltbox:burnt_marshmallow"
+		},
+		{
+			"item": "minecraft:cocoa_beans"
+		}
+	],
+	"result": {
+		"item": "siltbox:smore"
+	},
+	"group": "smore"
+}

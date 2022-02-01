@@ -1,0 +1,12 @@
+{
+	"replace": false,
+	"values": [
+		"siltbox:wooden_mattock",
+		"siltbox:stone_mattock",
+		"siltbox:iron_mattock",
+		"siltbox:golden_mattock",
+		"siltbox:diamond_mattock",
+		"siltbox:netherite_mattock",
+		"siltbox:steel_mattock"
+	]
+}
