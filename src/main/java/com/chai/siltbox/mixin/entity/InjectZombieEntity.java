@@ -32,18 +32,21 @@ public abstract class InjectZombieEntity extends HostileEntity
 		CallbackInfo info)
 	{
 		super.onKilledOther(world, entity);
-		VillagerEntity villagerEntity = (VillagerEntity)entity;
-		ZombieVillagerEntity zombieVillagerEntity = villagerEntity.method_29243(EntityType.ZOMBIE_VILLAGER, false);
-		zombieVillagerEntity.initialize(world, world.getLocalDifficulty(zombieVillagerEntity.getBlockPos()), SpawnReason.CONVERSION, new ZombieEntity.ZombieData(false, true), null);
-		zombieVillagerEntity.setVillagerData(villagerEntity.getVillagerData());
-		zombieVillagerEntity.setGossipData(villagerEntity.getGossip().serialize(NbtOps.INSTANCE).getValue());
-		zombieVillagerEntity.setOfferData(villagerEntity.getOffers().toTag());
-		zombieVillagerEntity.setXp(villagerEntity.getExperience());
-		if (!this.isSilent())
-		{
-			world.syncWorldEvent(null, 1026, this.getBlockPos(), 0);
-		}
 
-		info.cancel();
+		if (entity instanceof VillagerEntity)
+		{
+			VillagerEntity villagerEntity = (VillagerEntity) entity;
+			ZombieVillagerEntity zombieVillagerEntity = villagerEntity.method_29243(EntityType.ZOMBIE_VILLAGER, false);
+			zombieVillagerEntity.initialize(world, world.getLocalDifficulty(zombieVillagerEntity.getBlockPos()), SpawnReason.CONVERSION, new ZombieEntity.ZombieData(false, true), null);
+			zombieVillagerEntity.setVillagerData(villagerEntity.getVillagerData());
+			zombieVillagerEntity.setGossipData(villagerEntity.getGossip().serialize(NbtOps.INSTANCE).getValue());
+			zombieVillagerEntity.setOfferData(villagerEntity.getOffers().toTag());
+			zombieVillagerEntity.setXp(villagerEntity.getExperience());
+			if (!this.isSilent()) {
+				world.syncWorldEvent(null, 1026, this.getBlockPos(), 0);
+			}
+
+			info.cancel();
+		}
 	}
 }
