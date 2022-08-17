@@ -19,8 +19,7 @@
 	],
 	"rewards": {
 		"recipes": [
-			"siltbox:steel_ingot",
-			"siltbox:steel_ingot_from_blasting"
+			"siltbox:steel_ingot"
 		]
 	}
 }
