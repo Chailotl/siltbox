@@ -19,10 +19,13 @@ import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.WorldAccess;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.BiomeKeys;
 
 import java.util.List;
 import java.util.Random;
@@ -30,6 +33,7 @@ import java.util.Random;
 public class StrainerBlock extends Block implements Waterloggable
 {
 	public static Identifier STRAINER_LOOT = new Identifier(Main.MOD_ID, "gameplay/strainer");
+	public static Identifier STRAINER_BADLANDS_LOOT = new Identifier(Main.MOD_ID, "gameplay/strainer_badlands");
 
 	private static final VoxelShape COLLISION_SHAPE;
 	public static final BooleanProperty WATERLOGGED;
@@ -47,13 +51,30 @@ public class StrainerBlock extends Block implements Waterloggable
 		{
 			if (world.getBlockState(pos.down()).getBlock() == Blocks.BARREL)
 			{
-				LootTable lootTable = world.getServer().getLootManager().getTable(STRAINER_LOOT);
+				Identifier lootID = STRAINER_LOOT;
+
+				// Check if in a badlands biome
+				RegistryKey<Biome> biome = world.method_31081(pos).get();
+				if (biome == BiomeKeys.BADLANDS ||
+						biome == BiomeKeys.BADLANDS_PLATEAU ||
+						biome == BiomeKeys.ERODED_BADLANDS ||
+						biome == BiomeKeys.WOODED_BADLANDS_PLATEAU ||
+						biome == BiomeKeys.MODIFIED_BADLANDS_PLATEAU ||
+						biome == BiomeKeys.MODIFIED_WOODED_BADLANDS_PLATEAU)
+				{
+					lootID = STRAINER_BADLANDS_LOOT;
+				}
+
+				// Generate loot
+				LootTable lootTable = world.getServer().getLootManager().getTable(lootID);
 				LootContext.Builder builder = (new LootContext.Builder(world)).random(random);
 				List<ItemStack> list = lootTable.generateLoot(builder.build(LootContextTypes.EMPTY));
 
+				// Put into barrel
 				Inventory barrel = (Inventory) world.getBlockEntity(pos.down());
 				ItemStack remaining = HopperBlockEntity.transfer(null, barrel, list.get(0), null);
 
+				// Deal block damage
 				if (remaining.isEmpty() && random.nextInt(8) == 0)
 				{
 					int i = state.get(DURABILITY);
