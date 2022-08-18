@@ -1,0 +1,25 @@
+{
+	"parent": "minecraft:recipes/root",
+	"criteria": {
+		"has_slime_balls": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"item": "minecraft:slime_ball"
+					}
+				]
+			}
+		}
+	},
+	"requirements": [
+		[
+			"has_slime_balls"
+		]
+	],
+	"rewards": {
+		"recipes": [
+			"siltbox:slime_gloves"
+		]
+	}
+}
