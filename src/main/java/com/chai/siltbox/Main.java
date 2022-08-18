@@ -6,10 +6,14 @@ import com.chai.siltbox.enchantments.LaunchEnchantment;
 import com.chai.siltbox.enchantments.SkippingEnchantment;
 import com.chai.siltbox.enchantments.TradingCurseEnchantment;
 import com.chai.siltbox.entity.SeatEntity;
+import com.chai.siltbox.entity.SeedEntity;
+import com.chai.siltbox.entity.SeedEntityRenderer;
 import com.chai.siltbox.interfaces.IPlayerEntity;
 import com.chai.siltbox.interfaces.IWaterComponent;
 import com.chai.siltbox.item.SiltItems;
-import com.chai.siltbox.mixin.*;
+import com.chai.siltbox.mixin.AccessorFoodComponent;
+import com.chai.siltbox.mixin.AccessorItem;
+import com.chai.siltbox.mixin.AccessorShovelItem;
 import com.chai.siltbox.mixin.block.InvokerComposterBlock;
 import com.chai.siltbox.mixin.entity.AccessorTradeOffers;
 import com.chai.siltbox.particles.*;
@@ -33,6 +37,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
+import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
@@ -56,10 +61,7 @@ import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.texture.StatusEffectSpriteManager;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.entity.EntityDimensions;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SpawnGroup;
+import net.minecraft.entity.*;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
@@ -82,6 +84,7 @@ import net.minecraft.tag.Tag;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.village.TradeOffers;
@@ -114,7 +117,7 @@ public class Main implements ModInitializer, ClientModInitializer
 	public static final ScreenHandlerType<NetherForgeScreenHandler> NETHER_FORGE_SCREEN_HANDLER;
 
 	// Entites
-	//public static final EntityType<SeedEntity> SEED_ENTITY;
+	public static final EntityType<SeedEntity> SEED_ENTITY;
 	public static final EntityType<SeatEntity> SEAT_ENTITY;
 
 	// Particles
@@ -146,34 +149,38 @@ public class Main implements ModInitializer, ClientModInitializer
 	public static Tag<Block> HOT_BLOCKS = TagRegistry.block(new Identifier(MOD_ID, "hot_blocks"));
 	public static Tag<Fluid> HOT_FLUIDS = TagRegistry.fluid(new Identifier(MOD_ID, "hot_fluids"));
 
-	static {
+	static
+	{
 		// Blocks
 		NETHER_FORGE = Registry.register(Registry.BLOCK, new Identifier(MOD_ID, "nether_forge"),
-			new NetherForgeBlock(FabricBlockSettings.of(Material.METAL).requiresTool().strength(3.5F).luminance((state) ->
-			state.get(Properties.LIT) ? 13 : 0)));
+				  new NetherForgeBlock(FabricBlockSettings.of(Material.METAL).requiresTool().strength(3.5F).luminance((state) ->
+							 state.get(Properties.LIT) ? 13 : 0)));
 		Registry.register(Registry.ITEM, new Identifier(MOD_ID, "nether_forge"), new BlockItem(NETHER_FORGE,
-			new FabricItemSettings().group(ItemGroup.DECORATIONS)));
+				  new FabricItemSettings().group(ItemGroup.DECORATIONS)));
 		NETHER_FORGE_ENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(MOD_ID, "nether_forge"),
-			BlockEntityType.Builder.create(NetherForgeBlockEntity::new, NETHER_FORGE).build(null));
+				  BlockEntityType.Builder.create(NetherForgeBlockEntity::new, NETHER_FORGE).build(null));
 		NETHER_FORGE_RECIPE = Registry.register(Registry.RECIPE_TYPE, new Identifier(MOD_ID, "nether_forge"),
-			new RecipeType<NetherForgeRecipe>()
-		{
-			@Override
-			public String toString() { return "nether_forge"; }
-		});
+				  new RecipeType<NetherForgeRecipe>()
+				  {
+					  @Override
+					  public String toString()
+					  {
+						  return "nether_forge";
+					  }
+				  });
 		NETHER_FORGE_SERIALIZER = Registry.register(Registry.RECIPE_SERIALIZER, new Identifier(MOD_ID, "nether_forge"),
-			new CookingRecipeSerializer<>(NetherForgeRecipe::new, 200));
+				  new CookingRecipeSerializer<>(NetherForgeRecipe::new, 200));
 		NETHER_FORGE_SCREEN_HANDLER = ScreenHandlerRegistry.registerSimple(new Identifier(MOD_ID, "nether_forge"),
-			NetherForgeScreenHandler::new);
+				  NetherForgeScreenHandler::new);
 
 		// Entities
-		/*SEED_ENTITY = Registry.register(Registry.ENTITY_TYPE, new Identifier(MOD_ID, "seed"),
-			FabricEntityTypeBuilder.<SeedEntity>create(SpawnGroup.MISC, SeedEntity::new)
-			.dimensions(EntityDimensions.fixed(0.25F, 0.25F)).trackRangeBlocks(4).trackedUpdateRate(20).build());*/
+		SEED_ENTITY = Registry.register(Registry.ENTITY_TYPE, new Identifier(MOD_ID, "seed"),
+				  FabricEntityTypeBuilder.<SeedEntity>create(SpawnGroup.MISC, SeedEntity::new)
+							 .dimensions(EntityDimensions.fixed(0.25F, 0.25F)).trackRangeBlocks(4).trackedUpdateRate(10).build());
 
 		SEAT_ENTITY = Registry.register(Registry.ENTITY_TYPE, new Identifier(MOD_ID, "seat"),
-			FabricEntityTypeBuilder.create(SpawnGroup.MISC, SeatEntity::new)
-			.dimensions(EntityDimensions.fixed(0f, 0f)).build());
+				  FabricEntityTypeBuilder.create(SpawnGroup.MISC, SeatEntity::new)
+							 .dimensions(EntityDimensions.fixed(0f, 0f)).build());
 
 		// Particles
 		OAK_LEAF = Registry.register(Registry.PARTICLE_TYPE, new Identifier(MOD_ID, "oak_leaf"), FabricParticleTypes.simple());
@@ -238,90 +245,90 @@ public class Main implements ModInitializer, ClientModInitializer
 		((AccessorItem) Items.WARPED_SIGN).setMaxCount(64);
 
 		((IWaterComponent) Items.ENCHANTED_GOLDEN_APPLE).setWaterComponent(
-			(new WaterComponent.Builder()).thirst(2).hydrationModifier(0.8F).build());
+				  (new WaterComponent.Builder()).thirst(2).hydrationModifier(0.8F).build());
 		((IWaterComponent) Items.GOLDEN_APPLE).setWaterComponent(
-			(new WaterComponent.Builder()).thirst(2).hydrationModifier(0.8F).build());
+				  (new WaterComponent.Builder()).thirst(2).hydrationModifier(0.8F).build());
 		((IWaterComponent) Items.GOLDEN_CARROT).setWaterComponent(
-			(new WaterComponent.Builder()).thirst(2).hydrationModifier(0.8F).build());
+				  (new WaterComponent.Builder()).thirst(2).hydrationModifier(0.8F).build());
 		((IWaterComponent) Items.MELON_SLICE).setWaterComponent(
-			(new WaterComponent.Builder()).thirst(4).hydrationModifier(0.6F).build());
+				  (new WaterComponent.Builder()).thirst(4).hydrationModifier(0.6F).build());
 		((IWaterComponent) Items.RABBIT_STEW).setWaterComponent(
-			(new WaterComponent.Builder()).thirst(4).hydrationModifier(0.6F).build());
+				  (new WaterComponent.Builder()).thirst(4).hydrationModifier(0.6F).build());
 		((IWaterComponent) Items.BEETROOT_SOUP).setWaterComponent(
-			(new WaterComponent.Builder()).thirst(4).hydrationModifier(0.6F).build());
+				  (new WaterComponent.Builder()).thirst(4).hydrationModifier(0.6F).build());
 		((IWaterComponent) Items.MUSHROOM_STEW).setWaterComponent(
-			(new WaterComponent.Builder()).thirst(4).hydrationModifier(0.6F).build());
+				  (new WaterComponent.Builder()).thirst(4).hydrationModifier(0.6F).build());
 		((IWaterComponent) Items.APPLE).setWaterComponent(
-			(new WaterComponent.Builder()).thirst(2).hydrationModifier(0.3F).build());
+				  (new WaterComponent.Builder()).thirst(2).hydrationModifier(0.3F).build());
 		((IWaterComponent) Items.SWEET_BERRIES).setWaterComponent(
-			(new WaterComponent.Builder()).thirst(1).hydrationModifier(0.3F).build());
+				  (new WaterComponent.Builder()).thirst(1).hydrationModifier(0.3F).build());
 		((IWaterComponent) Items.CARROT).setWaterComponent(
-			(new WaterComponent.Builder()).thirst(2).hydrationModifier(0.1F).build());
+				  (new WaterComponent.Builder()).thirst(2).hydrationModifier(0.1F).build());
 		((IWaterComponent) Items.POTATO).setWaterComponent(
-			(new WaterComponent.Builder()).thirst(2).hydrationModifier(0.1F).build());
+				  (new WaterComponent.Builder()).thirst(2).hydrationModifier(0.1F).build());
 		((IWaterComponent) Items.BEETROOT).setWaterComponent(
-			(new WaterComponent.Builder()).thirst(2).hydrationModifier(0.1F).build());
+				  (new WaterComponent.Builder()).thirst(2).hydrationModifier(0.1F).build());
 
 		InvokerComposterBlock.registerCompost(0.3f, Items.ROTTEN_FLESH);
 
 		AccessorShovelItem.getPathStates().put(Blocks.DIRT, Blocks.GRASS_PATH.getDefaultState());
 
 		AccessorTradeOffers.setWanderingTrades(new Int2ObjectOpenHashMap<>(ImmutableMap.of(
-			1, new TradeOffers.Factory[]{
-				new TradeOffers.SellItemFactory(Items.ALLIUM, 1, 8, 8, 1),
-				new TradeOffers.SellItemFactory(Items.AZURE_BLUET, 1, 8, 8, 1),
-				new TradeOffers.SellItemFactory(Items.CORNFLOWER, 1, 8, 8, 1),
-				new TradeOffers.SellItemFactory(Items.DANDELION, 1, 8, 8, 1),
-				new TradeOffers.SellItemFactory(Items.OXEYE_DAISY, 1, 8, 8, 1),
-				new TradeOffers.SellItemFactory(Items.POPPY, 1, 8, 8, 1),
-				new TradeOffers.SellItemFactory(Items.RED_TULIP, 1, 8, 8, 1),
-				new TradeOffers.SellItemFactory(Items.ORANGE_TULIP, 1, 8, 8, 1),
-				new TradeOffers.SellItemFactory(Items.PINK_TULIP, 1, 8, 8, 1),
-				new TradeOffers.SellItemFactory(Items.WHITE_TULIP, 1, 8, 8, 1),
-				new TradeOffers.SellItemFactory(Items.BLUE_ORCHID, 1, 6, 8, 1),
-				new TradeOffers.SellItemFactory(Items.LILY_OF_THE_VALLEY, 1, 6, 8, 1),
-				new TradeOffers.SellItemFactory(Items.SUNFLOWER, 1, 4, 8, 1),
-				new TradeOffers.SellItemFactory(Items.ROSE_BUSH, 1, 4, 8, 1),
-				new TradeOffers.SellItemFactory(Items.LILAC, 1, 4, 8, 1),
-				new TradeOffers.SellItemFactory(Items.PEONY, 1, 4, 8, 1),
+				  1, new TradeOffers.Factory[]{
+							 new TradeOffers.SellItemFactory(Items.ALLIUM, 1, 8, 8, 1),
+							 new TradeOffers.SellItemFactory(Items.AZURE_BLUET, 1, 8, 8, 1),
+							 new TradeOffers.SellItemFactory(Items.CORNFLOWER, 1, 8, 8, 1),
+							 new TradeOffers.SellItemFactory(Items.DANDELION, 1, 8, 8, 1),
+							 new TradeOffers.SellItemFactory(Items.OXEYE_DAISY, 1, 8, 8, 1),
+							 new TradeOffers.SellItemFactory(Items.POPPY, 1, 8, 8, 1),
+							 new TradeOffers.SellItemFactory(Items.RED_TULIP, 1, 8, 8, 1),
+							 new TradeOffers.SellItemFactory(Items.ORANGE_TULIP, 1, 8, 8, 1),
+							 new TradeOffers.SellItemFactory(Items.PINK_TULIP, 1, 8, 8, 1),
+							 new TradeOffers.SellItemFactory(Items.WHITE_TULIP, 1, 8, 8, 1),
+							 new TradeOffers.SellItemFactory(Items.BLUE_ORCHID, 1, 6, 8, 1),
+							 new TradeOffers.SellItemFactory(Items.LILY_OF_THE_VALLEY, 1, 6, 8, 1),
+							 new TradeOffers.SellItemFactory(Items.SUNFLOWER, 1, 4, 8, 1),
+							 new TradeOffers.SellItemFactory(Items.ROSE_BUSH, 1, 4, 8, 1),
+							 new TradeOffers.SellItemFactory(Items.LILAC, 1, 4, 8, 1),
+							 new TradeOffers.SellItemFactory(Items.PEONY, 1, 4, 8, 1),
 
-				new TradeOffers.SellItemFactory(Items.LILY_PAD, 1, 6, 8, 1),
-				new TradeOffers.SellItemFactory(Items.SEA_PICKLE, 1, 4, 8, 1),
-				new TradeOffers.SellItemFactory(Items.BAMBOO, 1, 6, 8, 1),
+							 new TradeOffers.SellItemFactory(Items.LILY_PAD, 1, 6, 8, 1),
+							 new TradeOffers.SellItemFactory(Items.SEA_PICKLE, 1, 4, 8, 1),
+							 new TradeOffers.SellItemFactory(Items.BAMBOO, 1, 6, 8, 1),
 
-				new TradeOffers.SellItemFactory(Items.CARROT, 1, 4, 8, 1),
-				new TradeOffers.SellItemFactory(Items.POTATO, 1, 4, 8, 1),
-				new TradeOffers.SellItemFactory(Items.PUMPKIN_SEEDS, 1, 4, 8, 1),
-				new TradeOffers.SellItemFactory(Items.MELON_SEEDS, 1, 4, 8, 1),
-				new TradeOffers.SellItemFactory(Items.BEETROOT_SEEDS, 1, 4, 8, 1),
-				new TradeOffers.SellItemFactory(Items.COCOA_BEANS, 1, 2, 8, 1),
-				new TradeOffers.SellItemFactory(Items.SWEET_BERRIES, 1, 6, 8, 1),
+							 new TradeOffers.SellItemFactory(Items.CARROT, 1, 4, 8, 1),
+							 new TradeOffers.SellItemFactory(Items.POTATO, 1, 4, 8, 1),
+							 new TradeOffers.SellItemFactory(Items.PUMPKIN_SEEDS, 1, 4, 8, 1),
+							 new TradeOffers.SellItemFactory(Items.MELON_SEEDS, 1, 4, 8, 1),
+							 new TradeOffers.SellItemFactory(Items.BEETROOT_SEEDS, 1, 4, 8, 1),
+							 new TradeOffers.SellItemFactory(Items.COCOA_BEANS, 1, 2, 8, 1),
+							 new TradeOffers.SellItemFactory(Items.SWEET_BERRIES, 1, 6, 8, 1),
 
-				new TradeOffers.SellItemFactory(Items.SAND, 1, 16, 8, 1),
-				new TradeOffers.SellItemFactory(Items.RED_SAND, 1, 16, 8, 1),
-				new TradeOffers.SellItemFactory(Items.GLOWSTONE, 1, 4, 8, 1),
-				new TradeOffers.SellItemFactory(Items.BLUE_ICE, 1, 8, 8, 1),
-				new TradeOffers.SellItemFactory(Items.BRAIN_CORAL_BLOCK, 1, 8, 8, 1),
-				new TradeOffers.SellItemFactory(Items.BUBBLE_CORAL_BLOCK, 1, 8, 8, 1),
-				new TradeOffers.SellItemFactory(Items.FIRE_CORAL_BLOCK, 1, 8, 8, 1),
-				new TradeOffers.SellItemFactory(Items.HORN_CORAL_BLOCK, 1, 8, 8, 1),
-				new TradeOffers.SellItemFactory(Items.TUBE_CORAL_BLOCK, 1, 8, 8, 1),
-				new TradeOffers.SellItemFactory(Items.BROWN_MUSHROOM_BLOCK, 1, 8, 8, 1),
-				new TradeOffers.SellItemFactory(Items.RED_MUSHROOM_BLOCK, 1, 8, 8, 1)
-			},
-			2, new TradeOffers.Factory[]{
-				new TradeOffers.SellItemFactory(Items.ENCHANTED_GOLDEN_APPLE, 64, 1, 1, 1),
-				new TradeOffers.SellItemFactory(Items.WITHER_ROSE, 2, 1, 4, 1),
-				new TradeOffers.SellItemFactory(Items.DRAGON_BREATH, 2, 1, 4, 1),
-				new TradeOffers.SellItemFactory(Items.NAUTILUS_SHELL, 3, 1, 8, 1),
-				new TradeOffers.SellItemFactory(Items.SCUTE, 5, 1, 5, 1),
-				new TradeOffers.SellItemFactory(Items.PUFFERFISH, 3, 1, 4, 1),
-				new TradeOffers.SellItemFactory(Items.RABBIT_FOOT, 2, 1, 4, 1),
-				new TradeOffers.SellItemFactory(Items.SLIME_BALL, 1, 4, 8, 1),
-				new TradeOffers.SellItemFactory(Items.IRON_HORSE_ARMOR, 8, 1, 1, 1),
-				new TradeOffers.SellItemFactory(Items.GOLDEN_HORSE_ARMOR, 16, 1, 1, 1),
-				new TradeOffers.SellItemFactory(Items.DIAMOND_HORSE_ARMOR, 32, 1, 1, 1)
-			})));
+							 new TradeOffers.SellItemFactory(Items.SAND, 1, 16, 8, 1),
+							 new TradeOffers.SellItemFactory(Items.RED_SAND, 1, 16, 8, 1),
+							 new TradeOffers.SellItemFactory(Items.GLOWSTONE, 1, 4, 8, 1),
+							 new TradeOffers.SellItemFactory(Items.BLUE_ICE, 1, 8, 8, 1),
+							 new TradeOffers.SellItemFactory(Items.BRAIN_CORAL_BLOCK, 1, 8, 8, 1),
+							 new TradeOffers.SellItemFactory(Items.BUBBLE_CORAL_BLOCK, 1, 8, 8, 1),
+							 new TradeOffers.SellItemFactory(Items.FIRE_CORAL_BLOCK, 1, 8, 8, 1),
+							 new TradeOffers.SellItemFactory(Items.HORN_CORAL_BLOCK, 1, 8, 8, 1),
+							 new TradeOffers.SellItemFactory(Items.TUBE_CORAL_BLOCK, 1, 8, 8, 1),
+							 new TradeOffers.SellItemFactory(Items.BROWN_MUSHROOM_BLOCK, 1, 8, 8, 1),
+							 new TradeOffers.SellItemFactory(Items.RED_MUSHROOM_BLOCK, 1, 8, 8, 1)
+				  },
+				  2, new TradeOffers.Factory[]{
+							 new TradeOffers.SellItemFactory(Items.ENCHANTED_GOLDEN_APPLE, 64, 1, 1, 1),
+							 new TradeOffers.SellItemFactory(Items.WITHER_ROSE, 2, 1, 4, 1),
+							 new TradeOffers.SellItemFactory(Items.DRAGON_BREATH, 2, 1, 4, 1),
+							 new TradeOffers.SellItemFactory(Items.NAUTILUS_SHELL, 3, 1, 8, 1),
+							 new TradeOffers.SellItemFactory(Items.SCUTE, 5, 1, 5, 1),
+							 new TradeOffers.SellItemFactory(Items.PUFFERFISH, 3, 1, 4, 1),
+							 new TradeOffers.SellItemFactory(Items.RABBIT_FOOT, 2, 1, 4, 1),
+							 new TradeOffers.SellItemFactory(Items.SLIME_BALL, 1, 4, 8, 1),
+							 new TradeOffers.SellItemFactory(Items.IRON_HORSE_ARMOR, 8, 1, 1, 1),
+							 new TradeOffers.SellItemFactory(Items.GOLDEN_HORSE_ARMOR, 16, 1, 1, 1),
+							 new TradeOffers.SellItemFactory(Items.DIAMOND_HORSE_ARMOR, 32, 1, 1, 1)
+				  })));
 
 		ServerTickEvents.START_WORLD_TICK.register((world) ->
 		{
@@ -362,80 +369,79 @@ public class Main implements ModInitializer, ClientModInitializer
 
 		// Register packets
 		ServerPlayNetworking.registerGlobalReceiver(InventoryManager.SORT_INVENTORY, (server, player, handler, buf, responseSender) ->
-			server.execute(() -> InventoryManager.sortPlayerInventory(player.inventory)));
+				  server.execute(() -> InventoryManager.sortPlayerInventory(player.inventory)));
 
 		ServerPlayNetworking.registerGlobalReceiver(InventoryManager.SORT_CONTAINER, (server, player, handler, buf, responseSender) ->
-			server.execute(() -> InventoryManager.sortInventory(player.currentScreenHandler.getSlot(0).inventory)));
+				  server.execute(() -> InventoryManager.sortInventory(player.currentScreenHandler.getSlot(0).inventory)));
 
 		ServerPlayNetworking.registerGlobalReceiver(InventoryManager.DEPOSIT_ALL, (server, player, handler, buf, responseSender) ->
-			server.execute(() ->
-			{
-				int size = player.currentScreenHandler.getSlot(0).inventory.size();
-				for (int i = size; i < size + 27; ++i)
-				{
-					player.currentScreenHandler.transferSlot(null, i);
-				}
-			}));
+				  server.execute(() ->
+				  {
+					  int size = player.currentScreenHandler.getSlot(0).inventory.size();
+					  for (int i = size; i < size + 27; ++i)
+					  {
+						  player.currentScreenHandler.transferSlot(null, i);
+					  }
+				  }));
 
 		ServerPlayNetworking.registerGlobalReceiver(InventoryManager.LOOT_ALL, (server, player, handler, buf, responseSender) ->
-			server.execute(() ->
-			{
-				int size = player.currentScreenHandler.getSlot(0).inventory.size();
-				for (int i = 0; i < size; ++i)
-				{
-					player.currentScreenHandler.transferSlot(null, i);
-				}
-			}));
+				  server.execute(() ->
+				  {
+					  int size = player.currentScreenHandler.getSlot(0).inventory.size();
+					  for (int i = 0; i < size; ++i)
+					  {
+						  player.currentScreenHandler.transferSlot(null, i);
+					  }
+				  }));
 
 		ServerPlayNetworking.registerGlobalReceiver(InventoryManager.QUICK_STACK, (server, player, handler, buf, responseSender) ->
-			server.execute(() ->
-			{
-				Inventory container = player.currentScreenHandler.getSlot(0).inventory;
-				List<Slot> slots = player.currentScreenHandler.slots;
-				int size = slots.size();
-				for (int i = size - 36; i < size - 9; ++i)
-				{
-					if (container.containsAny(Collections.singleton(slots.get(i).getStack().getItem())))
-					{
-						player.currentScreenHandler.transferSlot(null, i);
-					}
-				}
-			}));
+				  server.execute(() ->
+				  {
+					  Inventory container = player.currentScreenHandler.getSlot(0).inventory;
+					  List<Slot> slots = player.currentScreenHandler.slots;
+					  int size = slots.size();
+					  for (int i = size - 36; i < size - 9; ++i)
+					  {
+						  if (container.containsAny(Collections.singleton(slots.get(i).getStack().getItem())))
+						  {
+							  player.currentScreenHandler.transferSlot(null, i);
+						  }
+					  }
+				  }));
 
 		ServerPlayNetworking.registerGlobalReceiver(InventoryManager.RESTOCK, (server, player, handler, buf, responseSender) ->
-			server.execute(() ->
-			{
-				Inventory container = player.currentScreenHandler.getSlot(0).inventory;
-				PlayerInventory inventory = player.inventory;
+				  server.execute(() ->
+				  {
+					  Inventory container = player.currentScreenHandler.getSlot(0).inventory;
+					  PlayerInventory inventory = player.inventory;
 
-				for (int i = 0; i < 36; ++i)
-				{
-					ItemStack stackOne = inventory.getStack(i);
-					int needed = stackOne.getMaxCount() - stackOne.getCount();
-					if (needed > 0)
-					{
-						for (int j = 0; j < container.size(); ++j)
-						{
-							ItemStack stackTwo = container.getStack(j);
-							if (stackOne.getItem() == stackTwo.getItem())
-							{
-								int count = stackTwo.getCount();
+					  for (int i = 0; i < 36; ++i)
+					  {
+						  ItemStack stackOne = inventory.getStack(i);
+						  int needed = stackOne.getMaxCount() - stackOne.getCount();
+						  if (needed > 0)
+						  {
+							  for (int j = 0; j < container.size(); ++j)
+							  {
+								  ItemStack stackTwo = container.getStack(j);
+								  if (stackOne.getItem() == stackTwo.getItem())
+								  {
+									  int count = stackTwo.getCount();
 
-								if (needed <= count)
-								{
-									inventory.insertStack(container.removeStack(j, needed));
-									needed = 0;
-								}
-								else
-								{
-									inventory.insertStack(container.removeStack(j, count));
-									needed -= count;
-								}
-							}
-						}
-					}
-				}
-			}));
+									  if (needed <= count)
+									  {
+										  inventory.insertStack(container.removeStack(j, needed));
+										  needed = 0;
+									  } else
+									  {
+										  inventory.insertStack(container.removeStack(j, count));
+										  needed -= count;
+									  }
+								  }
+							  }
+						  }
+					  }
+				  }));
 	}
 
 	@Override
@@ -449,31 +455,33 @@ public class Main implements ModInitializer, ClientModInitializer
 
 		// Register colors
 		ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) ->
-				world != null && pos != null ? BiomeColors.getFoliageColor(world, pos) : FoliageColors.getDefaultColor(),
-			SiltBlocks.OAK_LEAF_PILE, SiltBlocks.JUNGLE_LEAF_PILE, SiltBlocks.ACACIA_LEAF_PILE, SiltBlocks.DARK_OAK_LEAF_PILE,
-			SiltBlocks.OAK_HEDGE, SiltBlocks.JUNGLE_HEDGE, SiltBlocks.ACACIA_HEDGE, SiltBlocks.DARK_OAK_HEDGE);
+							 world != null && pos != null ? BiomeColors.getFoliageColor(world, pos) : FoliageColors.getDefaultColor(),
+				  SiltBlocks.OAK_LEAF_PILE, SiltBlocks.JUNGLE_LEAF_PILE, SiltBlocks.ACACIA_LEAF_PILE, SiltBlocks.DARK_OAK_LEAF_PILE,
+				  SiltBlocks.OAK_HEDGE, SiltBlocks.JUNGLE_HEDGE, SiltBlocks.ACACIA_HEDGE, SiltBlocks.DARK_OAK_HEDGE);
 		ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) -> FoliageColors.getSpruceColor(),
-			SiltBlocks.SPRUCE_LEAF_PILE, SiltBlocks.SPRUCE_HEDGE);
+				  SiltBlocks.SPRUCE_LEAF_PILE, SiltBlocks.SPRUCE_HEDGE);
 		ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) -> FoliageColors.getBirchColor(),
-			SiltBlocks.BIRCH_LEAF_PILE, SiltBlocks.BIRCH_HEDGE);
+				  SiltBlocks.BIRCH_LEAF_PILE, SiltBlocks.BIRCH_HEDGE);
 
 		ColorProviderRegistry.ITEM.register((stack, tintIndex) -> FoliageColors.getDefaultColor(),
-			SiltBlocks.OAK_LEAF_PILE, SiltBlocks.JUNGLE_LEAF_PILE, SiltBlocks.ACACIA_LEAF_PILE, SiltBlocks.DARK_OAK_LEAF_PILE,
-			SiltBlocks.OAK_HEDGE, SiltBlocks.JUNGLE_HEDGE, SiltBlocks.ACACIA_HEDGE, SiltBlocks.DARK_OAK_HEDGE);
+				  SiltBlocks.OAK_LEAF_PILE, SiltBlocks.JUNGLE_LEAF_PILE, SiltBlocks.ACACIA_LEAF_PILE, SiltBlocks.DARK_OAK_LEAF_PILE,
+				  SiltBlocks.OAK_HEDGE, SiltBlocks.JUNGLE_HEDGE, SiltBlocks.ACACIA_HEDGE, SiltBlocks.DARK_OAK_HEDGE);
 		ColorProviderRegistry.ITEM.register((stack, tintIndex) -> FoliageColors.getSpruceColor(),
-			SiltBlocks.SPRUCE_LEAF_PILE, SiltBlocks.SPRUCE_HEDGE);
+				  SiltBlocks.SPRUCE_LEAF_PILE, SiltBlocks.SPRUCE_HEDGE);
 		ColorProviderRegistry.ITEM.register((stack, tintIndex) -> FoliageColors.getBirchColor(),
-			SiltBlocks.BIRCH_LEAF_PILE, SiltBlocks.BIRCH_HEDGE);
+				  SiltBlocks.BIRCH_LEAF_PILE, SiltBlocks.BIRCH_HEDGE);
 
 		// Register models
 		ModelLoadingRegistry.INSTANCE.registerResourceProvider(rm -> new ModelProvider());
 
 		// Register entities
-		/*EntityRendererRegistry.INSTANCE.register(SEED_ENTITY, (dispatcher, context) ->
+		EntityRendererRegistry.INSTANCE.register(SEED_ENTITY, (dispatcher, context) ->
 		{
 			receiveEntityPacket();
-			return new FlyingItemEntityRenderer(dispatcher, context.getItemRenderer());
-		});*/
+			return new SeedEntityRenderer(dispatcher);
+			//return new FlyingItemEntityRenderer(dispatcher, context.getItemRenderer());
+		});
+		receiveEntityPacket();
 
 		EntityRendererRegistry.INSTANCE.register(SEAT_ENTITY, (dispatcher, context) -> new SeatEntity.EmptyRenderer(dispatcher));
 
@@ -518,7 +526,6 @@ public class Main implements ModInitializer, ClientModInitializer
 		});
 
 
-
 		ClientTickEvents.START_WORLD_TICK.register((world) ->
 		{
 			FogManager.tick();
@@ -545,7 +552,10 @@ public class Main implements ModInitializer, ClientModInitializer
 	private void render(MatrixStack matrices)
 	{
 		PlayerEntity player = client.player;
-		if (player == null || player.isCreative() || player.isSpectator()) { return; }
+		if (player == null || player.isCreative() || player.isSpectator())
+		{
+			return;
+		}
 
 		// Draw armor durability
 		int x = client.getWindow().getScaledWidth() / 2 - 108;
@@ -553,7 +563,10 @@ public class Main implements ModInitializer, ClientModInitializer
 		for (ItemStack armor : player.getArmorItems())
 		{
 			y -= 3;
-			if (armor == null || armor.isEmpty() || !armor.isDamageable()) { continue; }
+			if (armor == null || armor.isEmpty() || !armor.isDamageable())
+			{
+				continue;
+			}
 
 			RenderSystem.disableDepthTest();
 			RenderSystem.disableTexture();
@@ -588,7 +601,7 @@ public class Main implements ModInitializer, ClientModInitializer
 
 			while (iterator.hasNext())
 			{
-				StatusEffectInstance inst = (StatusEffectInstance)iterator.next();
+				StatusEffectInstance inst = (StatusEffectInstance) iterator.next();
 				StatusEffect status = inst.getEffectType();
 				if (inst.shouldShowIcon())
 				{
@@ -597,8 +610,7 @@ public class Main implements ModInitializer, ClientModInitializer
 					if (status.isBeneficial())
 					{
 						x += good++ * 33;
-					}
-					else
+					} else
 					{
 						x += bad++ * 33;
 						y += 33;
@@ -609,12 +621,11 @@ public class Main implements ModInitializer, ClientModInitializer
 					if (inst.isAmbient())
 					{
 						DrawableHelper.drawTexture(matrices, x, y, 32, 0, 32, 33, 64, 33);
-					}
-					else
+					} else
 					{
 						DrawableHelper.drawTexture(matrices, x, y, 0, 0, 32, 33, 64, 33);
 						DrawableHelper.drawCenteredText(matrices, client.textRenderer,
-							new LiteralText(ticksToTime(inst.getDuration())), x + 16, y + 22, 0xFF7D7D7D);
+								  new LiteralText(ticksToTime(inst.getDuration())), x + 16, y + 22, 0xFF7D7D7D);
 					}
 
 					int a = x;
@@ -648,16 +659,13 @@ public class Main implements ModInitializer, ClientModInitializer
 			if (temp >= 1)
 			{
 				DrawableHelper.drawTexture(matrices, x, y, 27, 0, 9, 9, 54, 27);
-			}
-			else if (temp > 0.66)
+			} else if (temp > 0.66)
 			{
 				DrawableHelper.drawTexture(matrices, x, y, 18, 0, 9, 9, 54, 27);
-			}
-			else if (temp > 0.33)
+			} else if (temp > 0.33)
 			{
 				DrawableHelper.drawTexture(matrices, x, y, 9, 0, 9, 9, 54, 27);
-			}
-			else if (temp > 0)
+			} else if (temp > 0)
 			{
 				DrawableHelper.drawTexture(matrices, x, y, 0, 0, 9, 9, 54, 27);
 			}
@@ -685,8 +693,7 @@ public class Main implements ModInitializer, ClientModInitializer
 			if (thirst >= 2)
 			{
 				DrawableHelper.drawTexture(matrices, x, y, 18 + (thirsty ? 18 : 0), 9, 9, 9, 54, 27);
-			}
-			else if (thirst == 1)
+			} else if (thirst == 1)
 			{
 				DrawableHelper.drawTexture(matrices, x, y, 27 + (thirsty ? 18 : 0), 9, 9, 9, 54, 27);
 			}
@@ -697,16 +704,13 @@ public class Main implements ModInitializer, ClientModInitializer
 			if (temp >= 1)
 			{
 				DrawableHelper.drawTexture(matrices, x, y, 27, 18, 9, 9, 54, 27);
-			}
-			else if (temp > 0.66)
+			} else if (temp > 0.66)
 			{
 				DrawableHelper.drawTexture(matrices, x, y, 18, 18, 9, 9, 54, 27);
-			}
-			else if (temp > 0.33)
+			} else if (temp > 0.33)
 			{
 				DrawableHelper.drawTexture(matrices, x, y, 9, 18, 9, 9, 54, 27);
-			}
-			else if (temp > 0)
+			} else if (temp > 0)
 			{
 				DrawableHelper.drawTexture(matrices, x, y, 0, 18, 9, 9, 54, 27);
 			}
@@ -733,23 +737,50 @@ public class Main implements ModInitializer, ClientModInitializer
 
 	private int getSprite(float temp)
 	{
-		if (temp >= 4f) { return 3; }
-		else if (temp >= 2.5f) { return 2; }
-		else if (temp >= 1f) { return 1; }
-		else if (temp <= -4f) { return -3; }
-		else if (temp <= -2.5f) { return -2; }
-		else if (temp <= -1f) { return -1; }
-		else { return 0; }
+		if (temp >= 4f)
+		{
+			return 3;
+		} else if (temp >= 2.5f)
+		{
+			return 2;
+		} else if (temp >= 1f)
+		{
+			return 1;
+		} else if (temp <= -4f)
+		{
+			return -3;
+		} else if (temp <= -2.5f)
+		{
+			return -2;
+		} else if (temp <= -1f)
+		{
+			return -1;
+		} else
+		{
+			return 0;
+		}
 	}
 
 	private float getOpacity(float temp)
 	{
-		if (temp < 0) { temp = -temp; }
+		if (temp < 0)
+		{
+			temp = -temp;
+		}
 
-		if (temp >= 5f) { return 1f; }
-		else if (temp >= 3f) { return 1f/2f; }
-		else if (temp >= 1f) { return 1f/4f; }
-		else { return 0f; }
+		if (temp >= 5f)
+		{
+			return 1f;
+		} else if (temp >= 3f)
+		{
+			return 1f / 2f;
+		} else if (temp >= 1f)
+		{
+			return 1f / 4f;
+		} else
+		{
+			return 0f;
+		}
 	}
 
 	private void renderGuiQuad(BufferBuilder buffer, int x, int y, int width, int height, int red, int green, int blue)
@@ -762,9 +793,11 @@ public class Main implements ModInitializer, ClientModInitializer
 		Tessellator.getInstance().draw();
 	}
 
+	public static final Identifier PacketID = new Identifier(MOD_ID, "spawn_packet");
+
 	public void receiveEntityPacket()
 	{
-		/*ClientSidePacketRegistry.INSTANCE.register(PacketID, (ctx, byteBuf) ->
+		ClientSidePacketRegistry.INSTANCE.register(PacketID, (ctx, byteBuf) ->
 		{
 			EntityType<?> et = Registry.ENTITY_TYPE.get(byteBuf.readVarInt());
 			UUID uuid = byteBuf.readUuid();
@@ -772,7 +805,8 @@ public class Main implements ModInitializer, ClientModInitializer
 			Vec3d pos = EntitySpawnPacket.PacketBufUtil.readVec3d(byteBuf);
 			float pitch = EntitySpawnPacket.PacketBufUtil.readAngle(byteBuf);
 			float yaw = EntitySpawnPacket.PacketBufUtil.readAngle(byteBuf);
-			ctx.getTaskQueue().execute(() -> {
+			ctx.getTaskQueue().execute(() ->
+			{
 				if (MinecraftClient.getInstance().world == null)
 					throw new IllegalStateException("Tried to spawn entity in a null world!");
 				Entity e = et.create(MinecraftClient.getInstance().world);
@@ -786,7 +820,7 @@ public class Main implements ModInitializer, ClientModInitializer
 				e.setUuid(uuid);
 				MinecraftClient.getInstance().world.addEntity(entityId, e);
 			});
-		});*/
+		});
 	}
 
 	private static final Map<UUID, Float> prevSaturation = new HashMap<>();
