@@ -1,9 +1,0 @@
-{
-	"type": "siltbox:nether_forge",
-	"ingredient": {
-		"item": "siltbox:iron_node"
-	},
-	"result": "minecraft:iron_ingot",
-	"experience": 0,
-	"cookingtime": 400
-}

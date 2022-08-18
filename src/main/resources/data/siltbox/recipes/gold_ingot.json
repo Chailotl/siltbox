@@ -1,9 +1,0 @@
-{
-	"type": "minecraft:smelting",
-	"ingredient": {
-		"item": "siltbox:gold_node"
-	},
-	"result": "minecraft:gold_ingot",
-	"experience": 1.0,
-	"cookingtime": 200
-}

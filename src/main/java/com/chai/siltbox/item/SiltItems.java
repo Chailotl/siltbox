@@ -22,10 +22,6 @@ public class SiltItems
 	}
 
 	// Materials
-	public static final Item IRON_NODE = register("iron_node",
-		new Item(new FabricItemSettings().group(ItemGroup.MATERIALS)));
-	public static final Item GOLD_NODE = register("gold_node",
-		new Item(new FabricItemSettings().group(ItemGroup.MATERIALS)));
 	public static final Item STEEL_INGOT = register("steel_ingot",
 		new Item(new FabricItemSettings().group(ItemGroup.MATERIALS)));
 	public static final Item ROTTEN_LEATHER = register("rotten_leather",
