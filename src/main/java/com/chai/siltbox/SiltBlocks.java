@@ -201,6 +201,8 @@ public class SiltBlocks
 	public static final Block POLISHED_BLACKSTONE_PATH = registerStonePath("polished_blackstone_path", Blocks.POLISHED_BLACKSTONE, "minecraft:block/polished_blackstone");
 	public static final Block END_STONE_PATH = registerStonePath("end_stone_path", Blocks.END_STONE, "minecraft:block/end_stone");
 
+	public static final Block BAMBOO_MAT = registerWoodPanel("bamboo_mat", Blocks.BAMBOO);
+
 	// Technical
 	public static final Block SAFE_FIRE = register("safe_fire",
 		new SafeFireBlock(FabricBlockSettings.of(Material.FIRE, MaterialColor.LAVA)
