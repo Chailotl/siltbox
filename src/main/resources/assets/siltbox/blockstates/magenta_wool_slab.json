@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "siltbox:block/magenta_wool_slab"
+    },
+    "type=double": {
+      "model": "minecraft:block/magenta_wool"
+    },
+    "type=top": {
+      "model": "siltbox:block/magenta_wool_top"
+    }
+  }
+}

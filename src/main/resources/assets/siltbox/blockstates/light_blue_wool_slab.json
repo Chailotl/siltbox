@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "siltbox:block/light_blue_wool_slab"
+    },
+    "type=double": {
+      "model": "minecraft:block/light_blue_wool"
+    },
+    "type=top": {
+      "model": "siltbox:block/light_blue_wool_top"
+    }
+  }
+}

@@ -42,6 +42,13 @@ public class SiltBlocks
 				.strength(0.5f).sounds(BlockSoundGroup.WOOD).breakByTool(FabricToolTags.AXES)),
 			new FabricItemSettings().group(ItemGroup.DECORATIONS));
 	}
+	private static Block registerWoolSlab(String name, Block block)
+	{
+		return register(name, new SlabBlock(FabricBlockSettings
+				.of(Material.WOOL, block.getDefaultMaterialColor())
+				.strength(0.8f).sounds(BlockSoundGroup.WOOL).breakByTool(FabricToolTags.SHEARS)),
+			new FabricItemSettings().group(ItemGroup.DECORATIONS));
+	}
 
 	private static Block registerStonePath(String name, Block block, String texture)
 	{
@@ -200,6 +207,24 @@ public class SiltBlocks
 	public static final Block BLACKSTONE_PATH = registerStonePath("blackstone_path", Blocks.BLACKSTONE, "minecraft:block/blackstone");
 	public static final Block POLISHED_BLACKSTONE_PATH = registerStonePath("polished_blackstone_path", Blocks.POLISHED_BLACKSTONE, "minecraft:block/polished_blackstone");
 	public static final Block END_STONE_PATH = registerStonePath("end_stone_path", Blocks.END_STONE, "minecraft:block/end_stone");
+
+
+	public static final Block WHITE_WOOL_SLAB = registerWoolSlab("white_wool_slab", Blocks.WHITE_WOOL);
+	public static final Block ORANGE_WOOL_SLAB = registerWoolSlab("orange_wool_slab", Blocks.ORANGE_WOOL);
+	public static final Block MAGENTA_WOOL_SLAB = registerWoolSlab("magenta_wool_slab", Blocks.MAGENTA_WOOL);
+	public static final Block YELLOW_WOOL_SLAB = registerWoolSlab("yellow_wool_slab", Blocks.YELLOW_WOOL);
+	public static final Block LIGHT_BLUE_WOOL_SLAB = registerWoolSlab("light_blue_wool_slab", Blocks.LIGHT_BLUE_WOOL);
+	public static final Block LIME_WOOL_SLAB = registerWoolSlab("lime_wool_slab", Blocks.LIME_WOOL);
+	public static final Block PINK_WOOL_SLAB = registerWoolSlab("pink_wool_slab", Blocks.PINK_WOOL);
+	public static final Block GRAY_WOOL_SLAB = registerWoolSlab("gray_wool_slab", Blocks.GRAY_WOOL);
+	public static final Block LIGHT_GRAY_WOOL_SLAB = registerWoolSlab("light_gray_wool_slab", Blocks.LIGHT_GRAY_WOOL);
+	public static final Block CYAN_WOOL_SLAB = registerWoolSlab("cyan_wool_slab", Blocks.CYAN_WOOL);
+	public static final Block PURPLE_WOOL_SLAB = registerWoolSlab("purple_wool_slab", Blocks.PURPLE_WOOL);
+	public static final Block BLUE_WOOL_SLAB = registerWoolSlab("blue_wool_slab", Blocks.BLUE_WOOL);
+	public static final Block BROWN_WOOL_SLAB = registerWoolSlab("brown_wool_slab", Blocks.BROWN_WOOL);
+	public static final Block GREEN_WOOL_SLAB = registerWoolSlab("green_wool_slab", Blocks.GREEN_WOOL);
+	public static final Block RED_WOOL_SLAB = registerWoolSlab("red_wool_slab", Blocks.RED_WOOL);
+	public static final Block BLACK_WOOL_SLAB = registerWoolSlab("black_wool_slab", Blocks.BLACK_WOOL);
 
 	// Technical
 	public static final Block SAFE_FIRE = register("safe_fire",
