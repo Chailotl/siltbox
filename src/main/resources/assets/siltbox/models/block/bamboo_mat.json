@@ -1,0 +1,6 @@
+{
+	"parent": "minecraft:block/carpet",
+	"textures": {
+		"wool": "siltbox:block/bamboo_mat"
+	}
+}
