@@ -1,0 +1,14 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"sss"
+	],
+	"key": {
+		"s": {
+			"item": "minecraft:bamboo"
+		}
+	},
+	"result": {
+		"item": "siltbox:bamboo_mat"
+	}
+}
