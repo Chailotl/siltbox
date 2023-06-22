@@ -1,0 +1,21 @@
+{
+  "replace": false,
+  "values": [
+    "siltbox:white_wool_slab",
+    "siltbox:orange_wool_slab",
+    "siltbox:magenta_wool_slab",
+    "siltbox:light_blue_wool_slab",
+    "siltbox:yellow_wool_slab",
+    "siltbox:lime_wool_slab",
+    "siltbox:pink_wool_slab",
+    "siltbox:gray_wool_slab",
+    "siltbox:light_gray_wool_slab",
+    "siltbox:cyan_wool_slab",
+    "siltbox:purple_wool_slab",
+    "siltbox:blue_wool_slab",
+    "siltbox:brown_wool_slab",
+    "siltbox:green_wool_slab",
+    "siltbox:red_wool_slab",
+    "siltbox:black_wool_slab"
+  ]
+}
