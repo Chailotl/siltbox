@@ -160,6 +160,8 @@ public class SiltBlocks
 	public static final Block JUNGLE_LEAF_PILE = registerLeafPile("jungle_leaf_pile");
 	public static final Block ACACIA_LEAF_PILE = registerLeafPile("acacia_leaf_pile");
 	public static final Block DARK_OAK_LEAF_PILE = registerLeafPile("dark_oak_leaf_pile");
+	
+	public static final Block BAMBOO_MAT = registerWoodPanel("bamboo_mat", Blocks.BAMBOO);
 
 	public static final Block OAK_POST = registerPost("oak_post", Blocks.OAK_PLANKS);
 	public static final Block SPRUCE_POST = registerPost("spruce_post", Blocks.SPRUCE_PLANKS);
@@ -207,7 +209,6 @@ public class SiltBlocks
 	public static final Block BLACKSTONE_PATH = registerStonePath("blackstone_path", Blocks.BLACKSTONE, "minecraft:block/blackstone");
 	public static final Block POLISHED_BLACKSTONE_PATH = registerStonePath("polished_blackstone_path", Blocks.POLISHED_BLACKSTONE, "minecraft:block/polished_blackstone");
 	public static final Block END_STONE_PATH = registerStonePath("end_stone_path", Blocks.END_STONE, "minecraft:block/end_stone");
-
 
 	public static final Block WHITE_WOOL_SLAB = registerWoolSlab("white_wool_slab", Blocks.WHITE_WOOL);
 	public static final Block ORANGE_WOOL_SLAB = registerWoolSlab("orange_wool_slab", Blocks.ORANGE_WOOL);
